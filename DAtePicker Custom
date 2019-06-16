@@ -1,0 +1,42 @@
+    @IBOutlet weak var txtDate: UITextField!
+        
+    var startDate: Date!
+    var endDate: Date!
+
+//---------------------------------    
+
+   @IBAction func ChooseDate(_ sender: UITextField) {
+        showDateTimePicker()
+    }
+//---------------------------------    
+    
+    func showDateTimePicker() {
+        let DatePickerView  : UIDatePicker = UIDatePicker()
+        DatePickerView.datePickerMode = .date
+        if endDate != nil
+        {
+            let calendar = Calendar.current
+            let newDate = calendar.date(byAdding: .minute, value: -1, to: endDate)
+            DatePickerView.maximumDate = newDate ?? endDate
+        }
+        if startDate == nil
+        {
+            setStartDate(Date())
+        }
+        txtDate.inputView = DatePickerView
+        DatePickerView.addTarget(self, action: #selector(handleStartDatePicker(sender:)), for: UIControl.Event.valueChanged)
+    }
+//---------------------------------    
+    
+    @objc func handleStartDatePicker(sender: UIDatePicker) {
+        setStartDate(sender.date)
+    }
+//---------------------------------    
+    fileprivate func setStartDate(_ date: Date) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy   hh:mm a"
+        startDate = date
+        lblDate.text = dateFormatter.string(from: date)
+    }
+ //---------------------------------    
+   
